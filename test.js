@@ -1,8 +1,8 @@
 ﻿var TodoList = require('./index');
-var TodoEntry = TodoList.SimpleModel;
+var TodoEntry = require('./index').SimpleModel;
 
 var fetchAllCallback = function (data) {
-	console.log(TodoList);
+//	console.log(TodoList);
 }
 
 TodoList.setDatasource('test.db', 'todos');

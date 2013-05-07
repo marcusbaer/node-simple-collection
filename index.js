@@ -50,7 +50,7 @@ var SimpleCollection = Models.SimpleCollection = Backbone.Collection.extend({
 		switch (type) {
 			case 'dirty':
 				var contentdb = require('dirty');
-				reference = dirty(source);
+				reference = contentdb(source);
 				reference.on('load', function() {
 					self.set(reference.get(collection));
 				});
@@ -104,3 +104,4 @@ var SimpleCollection = Models.SimpleCollection = Backbone.Collection.extend({
 });
 
 module.exports = new SimpleCollection();
+module.exports.SimpleModel = SimpleModel;
