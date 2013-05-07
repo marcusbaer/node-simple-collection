@@ -1,0 +1,33 @@
+﻿{
+	"name": "simple-collection",
+	"version": "0.0.1",
+	"description": "Library for simple collections",
+	"homepage": "http://github.com/marcusbaer/node-simple-collection",
+    "keywords": ["collection", "list", "backbone", "tags"],
+	"author": "Marcus Baer <info@baer-media.com>",
+	"repository": {
+		"type": "git",
+		"url": "http://github.com/marcusbaer/node-simple-collection.git"
+	},
+	"bugs": {
+		"url": "https://github.com/marcusbaer/node-simple-collection/issues"
+	},
+	"licenses" : [
+        {
+            "type": "MIT",
+            "url": "http://github.com/marcusbaer/node-simple-collection/blob/master/LICENSE"
+        }
+    ],
+	"engines" : {
+		"node": ">=0.10",
+		"npm": ">=1.2.14"
+	},
+	"dependencies": {
+		"optimist": "~0.3.5",
+		"dirty": "~0.9.7",
+		"mongojs": "~0.7.4",
+		"underscore": ">=1.4.4",
+		"backbone": ">=1.0.0"
+	},
+	"main": "./index.js"
+}
