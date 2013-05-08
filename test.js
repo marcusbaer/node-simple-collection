@@ -5,7 +5,7 @@ var fetchAllCallback = function (data) {
 //	console.log(TodoList);
 }
 
-TodoList.setDatasource('test.db', 'todos');
+TodoList.addDatasource('test.db', 'todos');
 TodoList.fetchAll(fetchAllCallback);
 
 TodoList.add(new TodoEntry({

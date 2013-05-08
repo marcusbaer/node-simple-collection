@@ -33,17 +33,13 @@ var SimpleModel = Models.SimpleModel = Backbone.Model.extend({
 
 var SimpleCollection = Models.SimpleCollection = Backbone.Collection.extend({
 
-	ds: {
-		type: null,				// is: dirty | mongodb
-		ref: null,				// can be REST url as well as a data file name
-		collection: null
-	},
+	ds: [],
 
 	getList: function (id) {
 		return this.toJSON();
 	},
 
-	setDatasource: function (source, collection) {
+	addDatasource: function (source, collection) {
 		var type = (source.indexOf('http')>=0) ? 'mongodb' : 'dirty';
 		var reference, contentdb;
 		var self = this;
@@ -61,40 +57,46 @@ var SimpleCollection = Models.SimpleCollection = Backbone.Collection.extend({
 				var reference = contentdb.collection(collection); // get a handle on the collection within the database
 				break;
 		}
-		this.ds = {
+		this.ds.push({
 			type: type,
 			ref: reference,
 			collection: collection
-		};
+		});
 	},
 		
 	saveAll: function () {
 		return this.ds;
 	},
 	
-	fetchAll: function (callback) {
+	fetchFromDatasource: function (ds, callback) {
 		var coll = [];
 		var self = this;
-		if (this.ds.type == 'mongodb') {
-			this.ds.ref.find().forEach(function(err, doc) {
-				if(err){
-					console.error(err);
-					res.send('Oops!: ' + err);
-					return;
-				}
-				if (!doc) {
-					// When all the documents in the collection has been visited, output the result.
-					self.set(coll);
-					if (callback) callback(coll);
-					return;
-				}
-				//add the current doc in the loop to the result
-				coll.push(doc);
-			});
-		} else if (this.ds.type == 'dirty') {
-			this.set(this.ds.ref.get(this.ds.collection));
-			if (callback) callback(coll);
-		}
+        if (ds.type == 'mongodb') {
+            ds.ref.find().forEach(function(err, doc) {
+                if(err){
+                    console.error(err);
+                    res.send('Oops!: ' + err);
+                    return;
+                }
+                if (!doc) {
+                    // When all the documents in the collection has been visited, output the result.
+                    self.set(coll);
+                    if (callback) callback(coll);
+                    return;
+                }
+                //add the current doc in the loop to the result
+                coll.push(doc);
+            });
+        } else if (ds.type == 'dirty') {
+            this.set(ds.ref.get(ds.collection));
+            if (callback) callback(coll);
+        }
+    },
+
+    fetchAll: function (callback) {
+        for (var i=0; i<this.ds.length; i++) {
+            this.fetchFromDatasource(this.ds[i], callback);
+        }
 	},
 	
 	addModel: function (attrs) {
